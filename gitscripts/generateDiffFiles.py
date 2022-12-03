@@ -57,7 +57,7 @@ with open('diff.txt') as f:
     .replace("{", "") for line in lines if line.find("function") != -1 and re.search("function +[a-z0-9A-Z_]*\(", line)]
     frequency = Counter(functions_touched)
 
-jsondata =  [{'name':key, 'value':value} for key,value in frequency.items()]
+jsondata =  [{'x':key, 'y':value} for key,value in frequency.items()]
 
 
 with open('result.json', 'w') as f: 

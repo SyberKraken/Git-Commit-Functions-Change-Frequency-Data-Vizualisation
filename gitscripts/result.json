@@ -1,8 +1,9 @@
 [
-  {"name": "logTest()", "value": 3},
-  {"name": "File_treemap()", "value": 1},
-  {"name": "X()", "value": 4},
-  {"name": "handler(", "value": 1},
-  {"name": "Home()", "value": 3},
-  {"name": "Menu()", "value": 1}
+  {"x": "asynchandler(", "y": 1},
+  {"x": "handler(", "y": 2},
+  {"x": "logTest()", "y": 3},
+  {"x": "File_treemap()", "y": 1},
+  {"x": "X()", "y": 4},
+  {"x": "Home()", "y": 3},
+  {"x": "Menu()", "y": 1}
 ]

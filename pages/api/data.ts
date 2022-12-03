@@ -22,18 +22,22 @@ let mydata = [
 
 
 
-export default async function handler(
+export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-    fs.readFile('./gitscripts/result.json', 'utf-8', (err: any, jsonString: any) => {
-        if (err) {
-            console.log("File read failed:", err)
-        }
-        
-        res.status(200).json(JSON.parse(jsonString))
-    })
-    
+    function load_data(_func:Function){
+        fs.readFile('./gitscripts/result.json', 'utf-8', (err: any, jsonString: any) => {
+            if (err) {
+                console.log("File read failed:", err)
+                
+            }
+                
+            _func(JSON.parse(jsonString))
+        })
+    }
+
+   load_data((j:any)=>res.status(200).json(j) )
 }
 
  
