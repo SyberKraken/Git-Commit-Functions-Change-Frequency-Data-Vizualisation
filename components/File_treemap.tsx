@@ -4,6 +4,10 @@ import { useState } from 'react';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap() {
+
+    const red_threshold: number = 10
+    const highest_red: number = 100
+
     const chart_title = "Items being compared"
     type dataItem = {x:String, y:number}  //x and y are required for apexcharts data item
    // const [chart_data, set_chart_data] = useState<Array<dataItem>>([])
@@ -46,13 +50,13 @@ export default function File_treemap() {
           colorScale: {
             ranges: [
               {
-                from: 10.01,
-                to: 500,
+                from: red_threshold + 0.1,
+                to: highest_red,
                 color: '#ff0000'
               },
                {
                 from: 0,
-                to: 10,
+                to: red_threshold,
                 color: '#00ff00'
               } 
             ]

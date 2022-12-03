@@ -22,8 +22,6 @@ let asyncarrowtest = async (test: any) => {
 }
 
 
-
-
 export default function Home() {
  
 

@@ -46,20 +46,37 @@ frequency = Counter()
 
 with open('diff.txt') as f:  
     lines = f.readlines()
-    functions_touched = [line
+    #matches all named functions delared with "function" syntax
+    functions_touched = [line for line in lines if re.search("function +[a-z0-9A-Z_]*\(", line)]
+
+    #matches all named functions delared with "=>" syntax
+    #OBS this does not match arrow functions without parenthesis around the parameters since it is impossible in typescript.
+    #to add this simply copy the below expression and remove the parenthesis V               V  indicated by the V's
+    named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
+    async_named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
+    
+combinedLists = functions_touched + named_arrow + async_named_arrow
+
+combinedLists = [re.sub("=[ ]*async[ ]*", "", line) for line in combinedLists] #remove async tag
+
+combinedLists = [line
+    .replace("=>", "")
+    .replace("let", "") 
+    .replace("const", "") 
+    .replace("-", "") 
+    .replace("+", "") 
+    .replace(" ", "") 
+    .replace("\n", "")
     .replace("export", "")
     .replace("default", "")
     .replace("function", "")
-    .replace("+", "")
-    .replace("-", "")
-    .replace(" ", "")
-    .replace("\n", "")
-    .replace("{", "") for line in lines if re.search("function +[a-z0-9A-Z_]*\(", line)]
-    frequency = Counter(functions_touched)
+    .replace("{", "")
+    .replace("=", "") 
+ for line in combinedLists]
 
-    named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]\([A-Za-z0-9 ]*\)[ ]*=>", line)]
-    async_named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]+async[ ]+\([A-Za-z0-9 ]*\)[ ]*=>", line)]
-    print(named_arrow)
+combinedLists = [re.sub("@@.*@@", "", line) for line in combinedLists]  # removes lines where git puts the functon on the same row as some metadata
+
+frequency = Counter(combinedLists)
 
 jsondata =  [{'x':key, 'y':value} for key,value in frequency.items()]
 
