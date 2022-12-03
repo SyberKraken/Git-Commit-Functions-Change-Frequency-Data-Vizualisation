@@ -6,10 +6,10 @@ import time
 import re
 
 #use bat script to write git log to file in windows because doing it via python is infinitley harder 
-#subprocess.call(["gitstuff.bat", "we", "are", "fun"])
+#OBS this only works on windows for now, but with the linux version you should not have to do as much work as this file is doing with windows.
 
 
-#if you want to use any git repo, change this path to whereever you want to run it and maybe also need to add the path to the subprocess calls on 32, 41
+#path becomes your absolutepath when run, if you want to use another git repo and not have theese files in it, change this path to whereever you want to run it and maybe also need to add the path to the subprocess calls on 32, 41
 path = os.path.dirname(os.path.abspath(__file__))
 
 batfiles = ["gitlogfile.bat", "gitdifffile.bat"]
