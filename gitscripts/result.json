@@ -1,9 +1,10 @@
 [
-  {"x": "asynchandler(", "y": 1},
-  {"x": "handler(", "y": 2},
-  {"x": "logTest()", "y": 3},
-  {"x": "File_treemap()", "y": 1},
-  {"x": "X()", "y": 4},
-  {"x": "Home()", "y": 3},
-  {"x": "Menu()", "y": 1}
+  {"x": "handler(", "y": 6},
+  {"x": "asynchandler(", "y": 4},
+  {"x": "load_data(_func:Function)", "y": 2},
+  {"x": "logTest()", "y": 6},
+  {"x": "File_treemap()", "y": 2},
+  {"x": "X()", "y": 8},
+  {"x": "Home()", "y": 6},
+  {"x": "Menu()", "y": 2}
 ]

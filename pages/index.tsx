@@ -13,6 +13,16 @@ function logTest(){
   let z =3
 }
 
+let arrowtest = (test: any) => {
+  test
+}
+
+let asyncarrowtest = async (test: any) => {
+  test
+}
+
+
+
 
 export default function Home() {
  

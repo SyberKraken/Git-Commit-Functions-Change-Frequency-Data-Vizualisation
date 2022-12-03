@@ -54,8 +54,12 @@ with open('diff.txt') as f:
     .replace("-", "")
     .replace(" ", "")
     .replace("\n", "")
-    .replace("{", "") for line in lines if line.find("function") != -1 and re.search("function +[a-z0-9A-Z_]*\(", line)]
+    .replace("{", "") for line in lines if re.search("function +[a-z0-9A-Z_]*\(", line)]
     frequency = Counter(functions_touched)
+
+    named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]\([A-Za-z0-9 ]*\)[ ]*=>", line)]
+    async_named_arrow = [line for line in lines if re.search("[A-Za-z0-9]+[ ]+async[ ]+\([A-Za-z0-9 ]*\)[ ]*=>", line)]
+    print(named_arrow)
 
 jsondata =  [{'x':key, 'y':value} for key,value in frequency.items()]
 
