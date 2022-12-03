@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-
+const fs = require('fs')
 type Data = {
   name: string
 }
@@ -20,11 +20,20 @@ let mydata = [
     {x:"hhhhw", y:22},
 ]
 
-export default function handler(
+
+
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<{x:String, y:number}[]>
+  res: NextApiResponse
 ) {
-  res.status(200).json(mydata)
+    fs.readFile('./gitscripts/result.json', 'utf-8', (err: any, jsonString: any) => {
+        if (err) {
+            console.log("File read failed:", err)
+        }
+        
+        res.status(200).json(JSON.parse(jsonString))
+    })
+    
 }
 
  
