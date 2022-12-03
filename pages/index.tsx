@@ -8,8 +8,9 @@ import styles from '../styles/Home.module.css'
 
 
 function logTest(){
-  let x = 1
+  
   let y =2
+  let z =3
 }
 
 
