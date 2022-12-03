@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export default function X() {
+export default function File_treemap() {
     const chart_title = "Items being compared"
     type dataItem = {x:String, y:number}  //x and y are required for apexcharts data item
    // const [chart_data, set_chart_data] = useState<Array<dataItem>>([])
