@@ -1,20 +1,62 @@
 body{
-  background-color: rgb(26, 24, 24);
+  background-color: rgb(34, 34, 34);
+  margin:0;
+  padding: 0;
 }
 
 .treewrap{
   position: absolute;
-  margin-left: 10%;
   width: 80%;
+  margin-left: 10%;
 }
 
 h1{
   color: white;
-
 }
 
 .menuwrapper{
   display: flex;
   justify-content: center;
   height: fit-content;
+}
+
+button {
+  background-color: rgb(90, 37, 139);
+  color: rgb(154, 250, 154);
+  transition: background-color 0.2s;
+  border: none;
+  font-family:monospace
+}
+
+button.active {
+  background-color: rgb(90, 37, 139);
+  color: rgb(255, 255, 255);
+  border-width: 1px;
+}
+nav{
+  display: flex;
+  justify-content: center;
+  background-color: rgb(90, 37, 139);
+}
+
+ul {
+  width: 20%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  
+}
+li{
+  list-style: none;
+}
+button{
+  aspect-ratio: 20/9;
+  width: 5rem;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  font-size: x-large;
+}
+button.active {
+  transform: translateY(-45%);
+  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
