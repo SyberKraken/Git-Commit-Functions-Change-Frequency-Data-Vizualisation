@@ -1,13 +1,10 @@
 
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import extract
- from '../util/gitextractor';
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap() {
-
-    extract()
 
     const red_threshold: number = 10
     const highest_red: number = 100

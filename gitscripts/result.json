@@ -2,11 +2,9 @@
   {"x": "File_treemap()", "y": 4},
   {"x": "Home()", "y": 6},
   {"x": "logTest()", "y": 4},
-  {"x": "handler(", "y": 3},
-  {"x": "asynchandler(", "y": 2},
   {"x": "load_data(_func:Function)", "y": 1},
   {"x": "X()", "y": 4},
   {"x": "Menu()", "y": 1},
-  {"x": "arrowtest(test:any)", "y": 1},
-  {"x": "asyncarrowtest(test:any)", "y": 3}
+  {"x": "arrowtest=(test:any)", "y": 1},
+  {"x": "asyncarrowtest=async(test:any)", "y": 3}
 ]

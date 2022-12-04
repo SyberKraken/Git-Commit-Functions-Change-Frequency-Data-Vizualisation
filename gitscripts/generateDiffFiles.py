@@ -21,7 +21,7 @@ from tqdm import tqdm
 
 def generate_result():
     path = os.path.dirname(os.path.abspath(__file__))
-    other_repo_path =  path + "/test"  #change other_repo_path for your own repos abs path like this -> R'C:\Users\simon\Documents\My Web Sites\nextjsproject'
+    other_repo_path =  path + "/test"  #change other_repo_path for your own repos abs path like this -> R'C:\Users\simon\Documents\My Web Sites\nextjsproject' 
 
     batfiles = ["gitlogfile.bat", "gitdifffile.bat"]
     batfilenames = ["log.txt", "diff.txt"]
@@ -64,40 +64,20 @@ def generate_result():
 
         #matches all named functions delared with "function" syntax
         print("searching for function definitions...")
-        functions_touched = [line for line in tqdm(lines) if re.search("function +[a-z0-9A-Z_]*\(", line)]
+        functions_touched = [re.search("function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)", line).group().replace("function", "").replace(" ", "") for line in tqdm(lines) if re.search("function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)", line)] 
 
         #matches all named functions delared with "=>" syntax
         #OBS this does not match arrow functions without parenthesis around the parameters since it is impossible in typescript.
         #to add this simply copy the below expression and remove the parenthesis       V               V  indicated by the V's
         print("searching for arrow function definitions...")
-        named_arrow = [line for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
+        named_arrow = [re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line).group().replace("=>", "").replace(" ", "") for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
         print("searching for async arrow function definitions...")
-        async_named_arrow = [line for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
+        async_named_arrow = [re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line).group().replace("=>", "").replace(" ", "") for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
 
     combinedLists = functions_touched + named_arrow + async_named_arrow
 
-    combinedLists = [line for line in tqdm(combinedLists) if line.find("eval(") == -1] #remove eval calls wich in some frameworks somehow sneak through the regex, TODO: make better regex
-
-    print("removing async label...")
-    combinedLists = [re.sub("=[ ]*async[ ]*", "", line) for line in tqdm(combinedLists)] #remove async tag
-    print("removing syntax symbols and expresisons and git +-...")
-    combinedLists = [line
-        .replace("=>", "")
-        .replace("let", "") 
-        .replace("const", "") 
-        .replace("-", "") 
-        .replace("+", "") 
-        .replace(" ", "") 
-        .replace("\n", "")
-        .replace("export", "")
-        .replace("default", "")
-        .replace("function", "")
-        .replace("{", "")
-        .replace("=", "") 
-    for line in tqdm(combinedLists)]
-    print("removing git metadata...")
-    combinedLists = [re.sub("@@.*@@", "", line) for line in tqdm(combinedLists)]  # removes lines where git puts the functon on the same row as some metadata
-
+    #remove eval calls wich in some frameworks somehow sneak through the regex, TODO: make better regex
+    combinedLists = [line for line in tqdm(combinedLists) if line.find("eval(") == -1] 
     frequency = Counter(combinedLists)
     print("generating json data...")
     jsondata =  [{'x':key, 'y':value} for key,value in tqdm(frequency.items())]
@@ -125,7 +105,7 @@ def generate_result():
         f.writelines(lines)
     #if you want to see the outputs from the git commands comment out this call and it will leave the files
     subprocess.call(["resetfiles.bat"])
-    print("done :) find your results in the data.json file")
+    print("done :) find your results in the result.json file")
 
 if(__name__ == "__main__"):
     generate_result()
