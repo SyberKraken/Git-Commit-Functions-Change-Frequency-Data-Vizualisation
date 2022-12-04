@@ -11,14 +11,17 @@ function logTest(){
   
   let y =2
   let z =3
+  "addedfor1bugfixchagetest"
 }
 
 let arrowtest = (test: any) => {
   test
+  "addedfor1bugfixchagetest"
 }
 
 let asyncarrowtest = async (test: any) => {
   test
+  "addedfor1bugfixchagetest"
 }
 
 
