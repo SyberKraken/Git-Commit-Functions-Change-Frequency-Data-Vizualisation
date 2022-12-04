@@ -9,17 +9,22 @@ npm run dev
 # or
 yarn dev
 ```
-This repo vizualises its own java/typescript functions change frequency in git commits with a treemap via nextjs 
+This repo vizualises its own or other git repos java/typescript functions change frequency in git commits with a treemap via nextjs 
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see a treemap generated from
 the result.json file in gitscripts.
 
 If you want to you can manualy change this file to see changes,
- or you can generate the json data form generateDiffFiles.py
-## OBS the pythonscipt generateDiffFiles.py only works on windows machines for now
+ or you can generate the json data from generateDiffFiles.py
+
+ generateDiffFiles.py can also generate changes from any other local repo
+at the moment you need to change the "other_repo_path" variable to
+the directory of your git repo
+
+OBS the pythonscipt generateDiffFiles.py only works on windows machines for now
 
 make some local commits with new  functions or change existing functions and then run the script 
 then you can see how the vizualisation changes with changes in functions
 
-currentley working on making this able to vizualise other git repos than itself
+currentley working on making single file with inputs to generate backend data
 as well as a check for OS version to be able to run on Linux 
