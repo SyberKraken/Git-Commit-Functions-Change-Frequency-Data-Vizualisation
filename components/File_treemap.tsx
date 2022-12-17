@@ -6,7 +6,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap() {
 
-    const red_threshold: number = 10
+    const red_threshold: number = 30
     const highest_red: number = 100
 
     const chart_title = "Items being compared"

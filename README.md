@@ -9,7 +9,8 @@ npm run dev
 # or
 yarn dev
 ```
-This repo vizualises its own or other git repos java/typescript functions change frequency in git commits with a treemap via nextjs 
+This repo vizualises its own or other git repos java/typescript functions precentage of commited changes wich are bugfixes compared
+with a treemap via nextjs, specificly commits with "bugfix" in its notes
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see a treemap generated from
 the result.json file in gitscripts.

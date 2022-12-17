@@ -19,6 +19,11 @@ from tqdm import tqdm
 
 #path becomes your absolutepath when run
 
+
+#generates precentage of commits realting to an item wich are bugfixes compared to number of actual changes made to a function
+
+
+
 def generate_result():
     path = os.path.dirname(os.path.abspath(__file__))
     other_repo_path =  path + "/test"  #change other_repo_path for your own repos abs path like this -> R'C:\Users\simon\Documents\My Web Sites\nextjsproject' 
@@ -45,40 +50,79 @@ def generate_result():
     subprocess.call(["gitlogfile.bat"])
     time.sleep(0.1)
 
+
+
+
     commit_ids = []
     with open('log.txt') as f:
         lines = f.readlines()
         commit_ids = [line[7:-1] for line in lines if line.startswith("commit")]
 
-    print("generating differences in git commits into file...")
-    for commit, latcommit in tqdm(zip(commit_ids, commit_ids[1:])):
-        subprocess.check_call(["gitdifffile.bat", commit, latcommit])
-        time.sleep(0.001)
-
-    frequency = Counter()
-
-    with open('diff.txt') as f:  
-        lines = f.readlines()
-
-        #TODO: make regex expression that matches all 3 of the valid function syntaxes, this will improve performance drasticly.
-
+        #OLD VERSION finds all funcitons with list comprehensions and regex
         #matches all named functions delared with "function" syntax
         print("searching for function definitions...")
         functions_touched = [re.search("function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)", line).group().replace("function", "").replace(" ", "") for line in tqdm(lines) if re.search("function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)", line)] 
 
         #matches all named functions delared with "=>" syntax
         #OBS this does not match arrow functions without parenthesis around the parameters since it is impossible in typescript.
-        #to add this simply copy the below expression and remove the parenthesis       V               V  indicated by the V's
         print("searching for arrow function definitions...")
         named_arrow = [re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line).group().replace("=>", "").replace(" ", "") for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
         print("searching for async arrow function definitions...")
         async_named_arrow = [re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line).group().replace("=>", "").replace(" ", "") for line in tqdm(lines) if re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)]
 
-    combinedLists = functions_touched + named_arrow + async_named_arrow
+        #NEW VERSION parses the text file line for line to count functions ion bugfixes
+        in_note = False
+        in_bugfix = False
+        bugfixed_functions = []
+        #list commits who are relevant to bugfixes
+        for line in lines:
+            bug_async_named_arrow  = ''
+            bug_named_arrow = ''
+            bug_function = ''
+            if line.startswith("commit"):
+                in_bugfix = False
+            if line.startswith("Notes"):
+                in_note = True
+            if in_note:
+                if "bugfix" in line:
+                    in_note = False
+                    in_bugfix =True
 
+            if in_bugfix:
+                
+                bug_async_named_arrow_search = re.search("[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)
+                if bug_async_named_arrow_search:
+                    bug_async_named_arrow = bug_async_named_arrow_search.group().replace("=>", "").replace(" ", "")
+                    bugfixed_functions.append(bug_async_named_arrow)
+
+                bug_named_arrow_search = re.search("[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>", line)
+                if bug_named_arrow_search:
+                    bug_named_arrow = bug_named_arrow_search.group().replace("=>", "").replace(" ", "")
+                    bugfixed_functions.append(bug_named_arrow)
+
+                bug_function_search = re.search("function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)", line)
+                if(bug_function_search):
+                    bug_function = bug_function_search.group().replace("function", "").replace(" ", "")
+                    bugfixed_functions.append(bug_function)
+
+    
+    bug_fix_frequency_per_function = Counter(bugfixed_functions)
+
+    frequency = Counter()
+    combinedLists = functions_touched + named_arrow + async_named_arrow
     #remove eval calls wich in some frameworks somehow sneak through the regex, TODO: make better regex
     combinedLists = [line for line in tqdm(combinedLists) if line.find("eval(") == -1] 
     frequency = Counter(combinedLists)
+
+    # make elements into the precentage of changes that are bug fixes
+    for f in frequency:
+        if bug_fix_frequency_per_function[f]:
+            frequency[f] = (bug_fix_frequency_per_function[f]/frequency[f])*100
+        else:
+            frequency[f] = 0.01
+    
+
+
     print("generating json data...")
     jsondata =  [{'x':key, 'y':value} for key,value in tqdm(frequency.items())]
     print("generating json file...")
