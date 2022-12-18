@@ -1,10 +1,10 @@
 [
+  {"x": "File_treemap()", "y": 17},
   {"x": "Menu()", "y": 0.01},
-  {"x": "logTest()", "y": 20.0},
-  {"x": "File_treemap()", "y": 0.01},
+  {"x": "logTest()", "y": 20},
   {"x": "Home()", "y": 0.01},
   {"x": "load_data(_func:Function)", "y": 0.01},
   {"x": "X()", "y": 0.01},
-  {"x": "arrowtest=(test:any)", "y": 50.0},
-  {"x": "asyncarrowtest=async(test:any)", "y": 25.0}
+  {"x": "arrowtest=(test:any)", "y": 50},
+  {"x": "asyncarrowtest=async(test:any)", "y": 25}
 ]

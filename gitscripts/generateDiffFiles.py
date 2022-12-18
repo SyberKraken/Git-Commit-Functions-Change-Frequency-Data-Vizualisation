@@ -28,8 +28,8 @@ def generate_result():
     path = os.path.dirname(os.path.abspath(__file__))
     other_repo_path =  path + "/test"  #change other_repo_path for your own repos abs path like this -> R'C:\Users\simon\Documents\My Web Sites\nextjsproject' 
 
-    batfiles = ["gitlogfile.bat", "gitdifffile.bat"]
-    batfilenames = ["log.txt", "diff.txt"]
+    batfiles = ["gitlogfile.bat"]
+    batfilenames = ["log.txt"]
 
     #TODO: generate script files here and dont have files at startup to rely on git diff %1 %2 >> diff.txt git log > log.txt
 
@@ -117,7 +117,7 @@ def generate_result():
     # make elements into the precentage of changes that are bug fixes
     for f in frequency:
         if bug_fix_frequency_per_function[f]:
-            frequency[f] = (bug_fix_frequency_per_function[f]/frequency[f])*100
+            frequency[f] = round((bug_fix_frequency_per_function[f]/frequency[f])*100)
         else:
             frequency[f] = 0.01
     
@@ -141,10 +141,8 @@ def generate_result():
     with open("resetfiles.bat") as f:
             lines = f.readlines()
             lines[0] = "del log.txt \n"
-            lines[1] = "del diff.txt \n"
-            lines[2] = "cd " + other_repo_path + "\n"
-            lines[3] = "del log.txt \n"
-            lines[4] = "del diff.txt \n"
+            lines[1] = "cd " + other_repo_path + "\n"
+            lines[2] = "del log.txt \n"
     with open("resetfiles.bat", 'w') as f:
         f.writelines(lines)
     #if you want to see the outputs from the git commands comment out this call and it will leave the files
