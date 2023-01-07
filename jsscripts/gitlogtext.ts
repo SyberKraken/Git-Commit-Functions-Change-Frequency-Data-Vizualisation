@@ -18,8 +18,9 @@ function getGitLog(repoUrl: string): frequencyPairings {
     execSync(`git clone ${repoUrl} ${repoDir}`);
 
     // Run the git log command in the repository directory
+    // realised github does not support notes, so kinda have to scrap that idea, trying something different
     const log = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} log -p`).toString();
-
+    console.log(log.includes("Notes:"))
     // Remove the temporary directory
     del.sync([repoDir], { force: true });
 
@@ -36,11 +37,13 @@ let functionhunter = (lines:string[]):frequencyPairings => {
     // This code uses a regular expression to match function definitions 
     // written in either the "function" syntax or the (named)"arrow" syntax, with or
     // without the async keyword.
+  
     const regex = /function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)|[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>|[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>/;
-
+        
         const functions = lines.map(line => {
+        if (line.includes("Note")){console.log(line)}
         const match = line.match(regex);
-        return match ? match[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":")  : null;
+        return match ? match[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":").replace(") ",")")   : null;
         });
 
         //filter out null values for TS safetey 
@@ -54,7 +57,10 @@ let functionhunter = (lines:string[]):frequencyPairings => {
         if (!typeSafeFunctions.length) {
             throw new Error("No functions found!");
         }
-        
+
+        // TODO : make 
+
+        // TODO : break this out to own function
         const counter: Map<string, number> = new Map<string, number>
         for (const str of typeSafeFunctions) {
             if (counter.has(str)) {
@@ -66,10 +72,15 @@ let functionhunter = (lines:string[]):frequencyPairings => {
         }
         const retlist: frequencyPairings = []
         counter.forEach((v, k)=>{retlist.push({key:k,num:v})})
-        
+
+   
+
+
         return retlist
         
     }
+
+
 
 
 
