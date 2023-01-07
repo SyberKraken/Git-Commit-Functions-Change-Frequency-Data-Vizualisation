@@ -1,11 +1,11 @@
 
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-
+import getGitLog from '../jsscripts/gitlogtext'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap() {
-
+   // 
     const red_threshold: number = 30
     const highest_red: number = 100
 
@@ -65,7 +65,6 @@ export default function File_treemap() {
         }
       }
     };
-    
     return (
       <div className="treewrap">
         <Chart options={options} type="treemap" series={dynamic_series} width="100%" />

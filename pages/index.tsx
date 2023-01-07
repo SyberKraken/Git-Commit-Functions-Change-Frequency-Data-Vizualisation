@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Menu from '../components/menu'
+import Menu from '../components/Menu'
 import File_treemap from '../components/File_treemap'
 import styles from '../styles/Home.module.css'
 
