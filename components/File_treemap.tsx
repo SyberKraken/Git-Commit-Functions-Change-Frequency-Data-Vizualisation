@@ -4,7 +4,7 @@ import { useState } from 'react';
 import getGitLog from '../jsscripts/gitlogtext'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export default function File_treemap() {
+export default function File_treemap(props:any) {
    // 
     const red_threshold: number = 30
     const highest_red: number = 100
@@ -13,7 +13,7 @@ export default function File_treemap() {
     type dataItem = {x:String, y:number}  //x and y are required for apexcharts data item
    // const [chart_data, set_chart_data] = useState<Array<dataItem>>([])
     let chart_data: Array<dataItem> = []
-    fetch('http://localhost:3000/api/data', {
+    fetch(props.remote, {
       headers : { 
         'Content-Type': 'application/json',
         'Accept': 'application/json'

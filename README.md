@@ -9,23 +9,20 @@ npm run dev
 # or
 yarn dev
 ```
-This repo vizualises its own or other git repos java/typescript functions precentage of commited changes wich are bugfixes compared
-with a treemap via nextjs, specificly commits with "bugfix" in its notes
+This repo vizualises the amount of chantges to its own or other git repos javascript/typescript functions 
+with a treemap via nextjs
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see a treemap generated from
-the result.json file in gitscripts.
+the repo linked in the "remote_branch_fetch" api page
 
-If you want to you can manualy change this file to see changes,
- or you can generate the json data from generateDiffFiles.py
+## TODO
 
- generateDiffFiles.py can also generate changes from any other local repo
-at the moment you need to change the "other_repo_path" variable to
-the directory of your git repo
+make the tree generate from input on webpage or from api call
 
-OBS the pythonscipt generateDiffFiles.py only works on windows machines for now
+remove old python code
 
-make some local commits with new  functions or change existing functions and then run the script 
-then you can see how the vizualisation changes with changes in functions
+make treemap of %bugfixes from some form of input of what is considered bugfix commits, Maybe list of commits, maybe some specific phrase in the names of the commits.
 
-currentley working on making single file with inputs to generate backend data
-as well as a check for OS version to be able to run on Linux 
+make parser capable of more langueges than TS and JS, (python, C, Java, GO, Rust, Ruby)
+
+make prettier site

@@ -5,7 +5,7 @@ import { join } from 'path';
 import del from 'del';
 import { count } from 'console';
 
-type frequencyPairings =  {key:string, num:number}[]
+type frequencyPairings =  {x:string, y:number}[]
 
 
 function getGitLog(repoUrl: string): frequencyPairings {
@@ -41,9 +41,8 @@ let functionhunter = (lines:string[]):frequencyPairings => {
     const regex = /function[ ]+[a-z0-9A-Z_]+\(+[a-z0-9A-Z_:, ]*\)|[A-Za-z0-9]+[ ]=[ ]+\([A-Za-z0-9: ]*\)[ ]*=>|[A-Za-z0-9]+[ ]=[ ]+async[ ]+\([A-Za-z0-9: ]*\)[ ]*=>/;
         
         const functions = lines.map(line => {
-        if (line.includes("Note")){console.log(line)}
-        const match = line.match(regex);
-        return match ? match[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":").replace(") ",")")   : null;
+          const match = line.match(regex);
+          return match ? match[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":").replace(") ",")")   : null;
         });
 
         //filter out null values for TS safetey 
@@ -71,7 +70,7 @@ let functionhunter = (lines:string[]):frequencyPairings => {
               }
         }
         const retlist: frequencyPairings = []
-        counter.forEach((v, k)=>{retlist.push({key:k,num:v})})
+        counter.forEach((v, k)=>{retlist.push({x:k,y:v})})
 
    
 

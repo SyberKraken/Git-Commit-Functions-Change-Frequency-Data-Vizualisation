@@ -30,7 +30,7 @@ export default function Home() {
     <>
     <Menu></Menu>
     <div>
-       <File_treemap></File_treemap>
+       <File_treemap remote="http://localhost:3000/api/remote_branch_fetch"></File_treemap>
     </div>
     </>
   )
