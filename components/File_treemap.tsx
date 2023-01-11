@@ -2,40 +2,48 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import getGitLog from '../jsscripts/gitlogtext'
+import { useRouter } from 'next/router';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap(props:any) {
    // 
     const red_threshold: number = 30
     const highest_red: number = 100
-
+    const router = useRouter()
     const chart_title = "Items being compared"
     type dataItem = {x:String, y:number}  //x and y are required for apexcharts data item
    // const [chart_data, set_chart_data] = useState<Array<dataItem>>([])
     let chart_data: Array<dataItem> = []
-    fetch(props.remote, {
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-     })
-    .then((response) => response.json())
-    .then((json)=> {
-       let l = json
-       l.forEach((xy:{x:String, y:number}) => {
-          chart_data.push(xy)
-       });
-       chart_data.sort((a , b)=>b.y-a.y)
-    })
+    //this refreshes tree on new data
+    let [dynamic_series, setdynamic_series] = useState([{name: chart_title, data: chart_data}])
     
-    //sort with biggest first
-    
-    let dynamic_series = 
-      [{
-        name: chart_title,
-        data: chart_data     
-      }]
-
+    //this stops us from going infinite on re renders
+    let [fetched_data, setfetched_data] = useState('')
+    if(props.remote !== '' && props.remote && fetched_data != props.remote){
+      fetch(props.remote, {
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then((response) => response.json())
+      .then((json)=> {
+        let l = json
+        l.forEach((xy:{x:String, y:number}) => {
+            chart_data.push(xy)
+        });
+        //sort with biggest first 
+        chart_data.sort((a , b)=>b.y-a.y)
+        setdynamic_series(
+          [{
+            name: chart_title,
+            data: chart_data  
+          }]
+        )
+        setfetched_data(props.remote)
+      })
+    }
+      
     const options = {
       chart: {
         id: "treemap",
@@ -58,13 +66,14 @@ export default function File_treemap(props:any) {
                {
                 from: 0,
                 to: red_threshold,
-                color: '#00ff00'
+                color: '#000000'
               } 
             ]
           }
         }
       }
     };
+    
     return (
       <div className="treewrap">
         <Chart options={options} type="treemap" series={dynamic_series} width="100%" />

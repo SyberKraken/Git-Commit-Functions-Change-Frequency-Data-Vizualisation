@@ -9,7 +9,7 @@ npm run dev
 # or
 yarn dev
 ```
-This repo vizualises the amount of chantges to its own or other git repos javascript/typescript functions 
+This repo vizualises the amount of changes to its own or other git repos javascript/typescript functions 
 with a treemap via nextjs
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see a treemap generated from

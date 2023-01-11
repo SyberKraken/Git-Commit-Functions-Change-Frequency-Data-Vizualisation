@@ -20,7 +20,7 @@ function getGitLog(repoUrl: string): frequencyPairings {
     // Run the git log command in the repository directory
     // realised github does not support notes, so kinda have to scrap that idea, trying something different
     const log = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} log -p`).toString();
-    console.log(log.includes("Notes:"))
+    console.log("filemanipulating")
     // Remove the temporary directory
     del.sync([repoDir], { force: true });
 
@@ -42,7 +42,7 @@ let functionhunter = (lines:string[]):frequencyPairings => {
         
         const functions = lines.map(line => {
           const match = line.match(regex);
-          return match ? match[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":").replace(") ",")")   : null;
+          return match ? match[0].split('(')[0].replace("function", "").replace(" ", "").replace("=>", "").replace(" async","").replace("= ","=").replace(": ",":").replace(") ",")").replace('=','')   : null;
         });
 
         //filter out null values for TS safetey 

@@ -3,6 +3,9 @@ import Image from 'next/image'
 import Menu from '../components/Menu'
 import File_treemap from '../components/File_treemap'
 import styles from '../styles/Home.module.css'
+import { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 
 
@@ -24,13 +27,52 @@ let asyncarrowtest = async (test: any) => {
   "addedfor1bugfixchagetest"
 }
 
+const useDelayedCallback = (callback: () => void, delay: number) => {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsReady(true);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [delay]);
+
+  return isReady ? callback : () => {};
+};
 
 export default function Home() {
+  const apiAdress = "http://localhost:3000/api/remote_branch_fetch?repo="
+  let [gitRemote, setGitRemote] = useState(''/*"https://github.com/SyberKraken/Git-Commit-Functions-Change-Frequency-Data-Vizualisation"*/)
+  let [newAdress, setNewAdress] = useState('')
+
+  const newRemote = (event: React.ChangeEvent<HTMLInputElement>) =>{
+    setGitRemote(event.target.value)
+  }
+  
+  
+   const router = useRouter()
+
+ 
+  if(router.query.adress && newAdress !== apiAdress + router.query.adress?.toString()){
+    setNewAdress(apiAdress + router.query.adress?.toString())
+  } 
+
+  const delayedReload = useDelayedCallback(()=>router.reload(), 2000)
+  
+  useEffect(()=>{
+    delayedReload()
+  }, [newAdress])
+
   return (
     <>
     <Menu></Menu>
-    <div>
-       <File_treemap remote="http://localhost:3000/api/remote_branch_fetch"></File_treemap>
+    <div className='fullwidthParent'>
+      <input className='repoAdressInput' type="text" value={gitRemote} onChange={newRemote} />
+      <Link className='newAdressButton' href={"http://localhost:3000?adress=" + gitRemote}>Update Chart</Link>
+      <File_treemap remote={newAdress}></File_treemap>
     </div>
     </>
   )
