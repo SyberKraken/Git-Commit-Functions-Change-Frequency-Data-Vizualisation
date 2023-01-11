@@ -12,12 +12,14 @@ yarn dev
 This repo vizualises the amount of changes to its own or other git repos javascript/typescript functions 
 with a treemap via nextjs
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see a treemap generated from
-the repo linked in the "remote_branch_fetch" api page
+Open [http://localhost:3000](http://localhost:3000) with your browser, type an adress in the 
+input bar and click "update chart" to see a treemap of the amount of changes made to a function
+since its creation. you can also directley input your repos adress as a get parameter
+ex:/?adress=https://github.com/xxxx/repo 
+wich will directley load your repos data.
+This does clone and remove the repo in your temp files.
 
 ## TODO
-
-make the tree generate from input on webpage or from api call
 
 remove old python code
 

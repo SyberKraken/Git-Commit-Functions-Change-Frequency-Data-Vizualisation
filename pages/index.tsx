@@ -27,22 +27,6 @@ let asyncarrowtest = async (test: any) => {
   "addedfor1bugfixchagetest"
 }
 
-const useDelayedCallback = (callback: () => void, delay: number) => {
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsReady(true);
-    }, delay);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [delay]);
-
-  return isReady ? callback : () => {};
-};
-
 export default function Home() {
   const apiAdress = "http://localhost:3000/api/remote_branch_fetch?repo="
   let [gitRemote, setGitRemote] = useState(''/*"https://github.com/SyberKraken/Git-Commit-Functions-Change-Frequency-Data-Vizualisation"*/)
@@ -60,17 +44,12 @@ export default function Home() {
     setNewAdress(apiAdress + router.query.adress?.toString())
   } 
 
-  const delayedReload = useDelayedCallback(()=>router.reload(), 2000)
-  
-  useEffect(()=>{
-    delayedReload()
-  }, [newAdress])
 
   return (
     <>
     <Menu></Menu>
     <div className='fullwidthParent'>
-      <input className='repoAdressInput' type="text" value={gitRemote} onChange={newRemote} />
+      <input className='repoAdressInput' placeholder="input your repos adress here" type="text" value={gitRemote} onChange={newRemote} />
       <Link className='newAdressButton' href={"http://localhost:3000?adress=" + gitRemote}>Update Chart</Link>
       <File_treemap remote={newAdress}></File_treemap>
     </div>
