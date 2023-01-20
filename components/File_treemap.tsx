@@ -16,7 +16,7 @@ export default function File_treemap(props:any) {
     let chart_data: Array<dataItem> = []
     //this refreshes tree on new data
     let [dynamic_series, setdynamic_series] = useState([{name: chart_title, data: chart_data}])
-    
+    console.log("prefetch")
     //this stops us from going infinite on re renders
     let [fetched_data, setfetched_data] = useState('')
     if(props.remote !== '' && props.remote && fetched_data != props.remote){
@@ -28,6 +28,7 @@ export default function File_treemap(props:any) {
       })
       .then((response) => response.json())
       .then((json)=> {
+        console.log("midfetch")
         let l = json
         l.forEach((xy:{x:String, y:number}) => {
             chart_data.push(xy)
@@ -41,9 +42,10 @@ export default function File_treemap(props:any) {
           }]
         )
         setfetched_data(props.remote)
+        console.log("donefetch")
       })
     }
-      
+    console.log("postfetch")
     const options = {
       chart: {
         id: "treemap",
