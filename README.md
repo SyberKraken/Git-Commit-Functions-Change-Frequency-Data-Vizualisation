@@ -12,6 +12,8 @@ yarn dev
 This repo vizualises the amount of changes to its own or other git repos javascript/typescript functions 
 with a treemap via nextjs
 
+![alt text](https://github.com/SyberKraken/Git-Commit-Functions-Change-Frequency-Data-Vizualisation/blob/main/imgs/example.png)
+
 Open [http://localhost:3000](http://localhost:3000) with your browser, type an adress in the 
 input bar and click "update chart" to see a treemap of the amount of changes made to a function
 since its creation. you can also directley input your repos adress as a get parameter
