@@ -78,23 +78,25 @@ button.active {
 .newAdressButton{
   all:unset;
   width: fit-content;
-  height: 2rem;
-  border:solid;
-  border-color: #365850;
+  height: 2rem;  
+  padding: 5px;
+  border-top: solid;
   border-width: 1px;
-  margin-top: 1rem;
+  border-color: #365850;
+  margin-left: 10%;
   color: white;
   font-family: consolas;
-  background-color: #29423c;
- 
+  background-color: #29423c; 
 }
 .newAdressButton:active{
   background-color: #365850;
 }
 .repoAdressInput{
+  margin-bottom: 10px;
   margin-top: 1rem;
   width: 76.88%;
   margin-left: 10%;
+  margin-right: 10%;
   border: none;
   background-color: #29423c;
   color: white;
@@ -103,5 +105,4 @@ button.active {
 }
 .fullwidthParent{
   width: 100vw;
- 
 }

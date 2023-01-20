@@ -51,6 +51,9 @@ export default function Home() {
     <div className='fullwidthParent'>
       <input className='repoAdressInput' placeholder="input your repos adress here" type="text" value={gitRemote} onChange={newRemote} />
       <Link className='newAdressButton' href={"http://localhost:3000/?adress=" + gitRemote}>Update Chart</Link>
+      
+    </div>
+    <div className='fullwidthParent'>
       <File_treemap remote={newAdress}></File_treemap>
     </div>
     </>

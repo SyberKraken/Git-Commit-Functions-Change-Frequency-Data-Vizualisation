@@ -12,7 +12,7 @@ const Menu: React.FunctionComponent<Props> = () => {
   return (
     <nav>
       <ul>
-        <li>
+       {/*  <li>
           <button
             className={activeLink === 'home' ? 'active' : ''}
             onClick={() => handleLinkClick('home')}
@@ -43,7 +43,7 @@ const Menu: React.FunctionComponent<Props> = () => {
           >
             linecharts
           </button>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
