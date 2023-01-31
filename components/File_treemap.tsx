@@ -1,6 +1,6 @@
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import getGitLog from '../jsscripts/gitlogtext'
 import { useRouter } from 'next/router';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -19,6 +19,13 @@ export default function File_treemap(props:any) {
     console.log("prefetch")
     //this stops us from going infinite on re renders
     let [fetched_data, setfetched_data] = useState('')
+    useEffect(() =>{
+      if(props.remote !== '' && props.remote){
+        getGitLog(props.remote)
+      }
+     
+
+    },[])
     if(props.remote !== '' && props.remote && fetched_data != props.remote){
       fetch(props.remote, {
         headers : { 
@@ -29,7 +36,7 @@ export default function File_treemap(props:any) {
       .then((response) => response.json())
       .then((json)=> {
         console.log("midfetch")
-        let l = json
+     /*    let l = json
         l.forEach((xy:{x:String, y:number}) => {
             chart_data.push(xy)
         });
@@ -42,9 +49,20 @@ export default function File_treemap(props:any) {
           }]
         )
         setfetched_data(props.remote)
-        console.log("donefetch")
+        console.log("donefetch") */
+
+
+
+
+
+          json.array.forEach((element:any) => {
+          console.log(element)
+
+        });
+
       })
     }
+
     console.log("postfetch")
     const options = {
       chart: {
