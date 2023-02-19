@@ -19,13 +19,6 @@ export default function File_treemap(props:any) {
     console.log("prefetch")
     //this stops us from going infinite on re renders
     let [fetched_data, setfetched_data] = useState('')
-    useEffect(() =>{
-      if(props.remote !== '' && props.remote){
-        getGitLog(props.remote)
-      }
-     
-
-    },[])
     if(props.remote !== '' && props.remote && fetched_data != props.remote){
       fetch(props.remote, {
         headers : { 
