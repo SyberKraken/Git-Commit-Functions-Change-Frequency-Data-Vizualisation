@@ -7,7 +7,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap(props:any) {
    // 
-    const red_threshold: number = 30
+    const red_threshold: number = 20
     const highest_red: number = 100
     const router = useRouter()
     const chart_title = "Items being compared"
@@ -28,11 +28,17 @@ export default function File_treemap(props:any) {
       })
       .then((response) => response.json())
       .then((json)=> {
+        let mapFromJson = new Map<String, number>(Object.entries(json))
         console.log("midfetch")
+        console.log(mapFromJson)
+        mapFromJson.forEach((value,key)=>{
+          chart_data.push(({x:key,y:Math.round(value*100)/100}))
+        })
      /*    let l = json
         l.forEach((xy:{x:String, y:number}) => {
             chart_data.push(xy)
         });
+      */
         //sort with biggest first 
         chart_data.sort((a , b)=>b.y-a.y)
         setdynamic_series(
@@ -42,16 +48,7 @@ export default function File_treemap(props:any) {
           }]
         )
         setfetched_data(props.remote)
-        console.log("donefetch") */
-
-
-
-
-
-          json.array.forEach((element:any) => {
-          console.log(element)
-
-        });
+        console.log("donefetch") 
 
       })
     }

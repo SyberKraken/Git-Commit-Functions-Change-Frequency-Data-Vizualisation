@@ -37,30 +37,17 @@ export default function getGitLog(repoUrl: string) {
          //console.log(sha)
       // Run the git diff command for the current commit
       const diff = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} diff ${sha}`, {maxBuffer: 1024 * 1024 * 1024 * 9999999 }).toString();
-      if (!(count > 1)){ 
-        console.log("diff")
-      console.log(diff)}
      
-      // Process the diff to extract the function names
-      // processDiff(diff);
       let function_list = Array<string>()
       getFunctionsFromDiff(diff, function_list)
       commits_to_functions.set(sha, function_list)
-      //console.log("aftercmtf-----------------------------------")
-      //console.log(sha)
+
       // Get the SHA of the parent commit for the next iteration
       sha = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} rev-list ${sha}^ --max-count=1`).toString().trim();
       //console.log("aftersha")
       } catch (error) {
         errors++
-       // console.log("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-       if(! (errors > 1)){
         console.log(error)
-       }
-        
-        
-       // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        //console.log(sha_list.length)
         return
       }
      
@@ -73,7 +60,7 @@ export default function getGitLog(repoUrl: string) {
     // Remove the temporary directory
     del.sync([repoDir], { force: true });
 
-/*     // Prepare the final result as an array of frequencyPairing objects
+    /*     // Prepare the final result as an array of frequencyPairing objects
     const result: frequencyPairing[] = [];
     counter.forEach((v, k) => {
         result.push({ x: k, y: v });
@@ -82,20 +69,88 @@ export default function getGitLog(repoUrl: string) {
 
 
 
-    //make commit-functions to json
-/*     console.log(commits_to_functions);
- */    let json:{commits:any[]} = {commits:[]}
-    commits_to_functions.forEach((item, sha)=>{
-      //console.log(item);
+        //make commit-functions to json
+    /*     console.log(commits_to_functions);
+    */ 
+    /*
+    ######   ######   #######  #        ###  #     #  ###  #     #     #     ###  ######   #     #      #######  #######  ######   #     #  #     #  #           #    
+    #     #  #     #  #        #         #   ##   ##   #   ##    #    # #     #   #     #   #   #       #        #     #  #     #  ##   ##  #     #  #          # #   
+    #     #  #     #  #        #         #   # # # #   #   # #   #   #   #    #   #     #    # #        #        #     #  #     #  # # # #  #     #  #         #   #  
+    ######   ######   #####    #         #   #  #  #   #   #  #  #  #     #   #   ######      #         #####    #     #  ######   #  #  #  #     #  #        #     # 
+    #        #   #    #        #         #   #     #   #   #   # #  #######   #   #   #       #         #        #     #  #   #    #     #  #     #  #        ####### 
+    #        #    #   #        #         #   #     #   #   #    ##  #     #   #   #    #      #         #        #     #  #    #   #     #  #     #  #        #     # 
+    #        #     #  #######  #######  ###  #     #  ###  #     #  #     #  ###  #     #     #         #        #######  #     #  #     #   #####   #######  #     # 
+                                                                                                                                                                      
       
-      json.commits.push([sha, item])
+    (Freq + bugs) * age
+
+    Age =  1 - 1/(Index of current commit + 1)
+    Freq = nr of times in all commits
+    Bugs = nr of bugfix commits           YET TO BE IMPLEMENTED
+
+
+    for each instance of a change in the  repo it is worth 1 "point",
+     if it also was a bugfix it is worth 5 points, 
+     then the 1 or 5 is multiplied by 1/age where age is a fraction from 0 to 1 with 1 representing the newest commit
+     and 0 the first commit,  the age is 1/index of age starting at 1  for the newest commit
+     as such the final "point" calue is not valueable in itself but rather comparing its value to others in the same repo
+     can be usefull.
+
+    let age = 1/index ;
+    let Freq = 1;
+    let bug = 4;
+    if (isBug(item)){
+          freq += bug;
+    }
+    Freq*=age;
+    funcname.set value += freq;
+    */                                                                                                                                                               
+
+    let itemsums = new Map<String, number>()
+    let simplesums = new Map<String, number>()
+    let json:{commits:any[]} = {commits:[]}
+    let index = 1;
+    
+    commits_to_functions.forEach((items, sha)=>{
+      index++
+      let age = 1/index
+      
+      items.forEach((name)=>{
+
+        let importance = 1
+        if (isBug(name)){
+          importance += 4
+        }
+        importance *= age;
+        let prev_val = itemsums.get(name)
+        if (prev_val){
+          itemsums.set(name,  prev_val + importance)
+          simplesums.set(name, simplesums.get(name)!+1)
+        }
+        else{
+          simplesums.set(name, 1)
+          itemsums.set(name, importance)
+        }
+        
+      })
+      
+      //json.commits.push([sha, items])
     })
 
-    return json;
+  /*   console.log(itemsums);
+    console.log("----")
+    console.log(simplesums); */
+    return Object.fromEntries(itemsums) ;
   } catch (error) {
     console.error(error);
     return [];
   }
+}
+
+function isBug(name: string){
+  //here we should either have an optional input that is the list of buggy commits
+
+  return true
 }
 
 function getFunctionsFromDiff(diff: string, ret_funcs:string[]) {

@@ -6,18 +6,15 @@ body{
 
 .treewrap{
   position: absolute;
-  width: 60%;
-  margin-left: 20%;
+  width: 90%;
+  margin-left: 5%;
   overflow: hidden
 }
 
-.apexcharts-datalabel{
+/* .apexcharts-datalabel{
 
   font-size: 1.5rem;
-}
-.apexcharts-data-labels{
- 
-}
+} */
 
 .apexcharts-treemap-rect{
   
