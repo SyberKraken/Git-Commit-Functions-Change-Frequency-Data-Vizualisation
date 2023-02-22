@@ -40,7 +40,7 @@ export default function getGitLog(repoUrl: string) {
      
       let function_list = Array<string>()
       getFunctionsFromDiff(diff, function_list)
-      commits_to_functions.set(sha, function_list)
+      commits_to_functions.set(sha, function_list) 
 
       // Get the SHA of the parent commit for the next iteration
       sha = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} rev-list ${sha}^ --max-count=1`).toString().trim();
