@@ -7,7 +7,7 @@ const cliProgress = require('cli-progress');
 const sleep = require('sleep');
 type frequencyPairing = { x: string, y: number };
 
-export default function getGitLog(repoUrl: string) {
+export default function getGitLog(repoUrl: string, useAge?:boolean, useFreq?:boolean, useBugs?:boolean, bugCommitList?: Array<string>) {
   try {
     // Create a temporary directory to clone the repository into
     const tempDir = tmpdir();
@@ -23,18 +23,19 @@ export default function getGitLog(repoUrl: string) {
     let all_sha = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} rev-list HEAD`).toString().trim();
     let sha_list = all_sha.split("\n")
 
-    //console.log(sha_list)
+    ////console.log(sha_list)
     // Loop through the git diffs and process each one
     let errors = 0;
     let count = 0
     const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     bar1.start(sha_list.length, 0);
     sha_list.forEach ( (sha) =>{
+      //TODO break out to func
       count++
       bar1.update(count)
       
       try {
-         //console.log(sha)
+         ////console.log(sha)
       // Run the git diff command for the current commit
       const diff = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} diff ${sha}`, {maxBuffer: 1024 * 1024 * 1024 * 9999999 }).toString();
      
@@ -44,18 +45,18 @@ export default function getGitLog(repoUrl: string) {
 
       // Get the SHA of the parent commit for the next iteration
       sha = execSync(`git --git-dir=${repoDir}/.git --work-tree=${repoDir} rev-list ${sha}^ --max-count=1`).toString().trim();
-      //console.log("aftersha")
+      ////console.log("aftersha")
       } catch (error) {
         errors++
-        console.log(error)
+        //console.log(error)
         return
       }
      
     })
-   /*  console.log()
-    console.log(errors)
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") */
-    //console.log("out of commits")
+   /*  //console.log()
+    //console.log(errors)
+    //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") */
+    ////console.log("out of commits")
 
     // Remove the temporary directory
     del.sync([repoDir], { force: true });
@@ -70,7 +71,7 @@ export default function getGitLog(repoUrl: string) {
 
 
         //make commit-functions to json
-    /*     console.log(commits_to_functions);
+    /*     //console.log(commits_to_functions);
     */ 
     /*
     ######   ######   #######  #        ###  #     #  ###  #     #     #     ###  ######   #     #      #######  #######  ######   #     #  #     #  #           #    
@@ -112,6 +113,7 @@ export default function getGitLog(repoUrl: string) {
     let index = 1;
     
     commits_to_functions.forEach((items, sha)=>{
+      //TODO break out to func
       index++
       let age = 1/index
       
@@ -137,9 +139,9 @@ export default function getGitLog(repoUrl: string) {
       //json.commits.push([sha, items])
     })
 
-  /*   console.log(itemsums);
-    console.log("----")
-    console.log(simplesums); */
+  /*   //console.log(itemsums);
+    //console.log("----")
+    //console.log(simplesums); */
     return Object.fromEntries(itemsums) ;
   } catch (error) {
     console.error(error);

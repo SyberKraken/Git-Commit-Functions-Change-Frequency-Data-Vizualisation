@@ -29,7 +29,7 @@ export default function handler(
     function load_data(_func:Function){
         fs.readFile('./gitscripts/result.json', 'utf-8', (err: any, jsonString: any) => {
             if (err) {
-                console.log("File read failed:", err)
+                //console.log("File read failed:", err)
                 
             }
                 

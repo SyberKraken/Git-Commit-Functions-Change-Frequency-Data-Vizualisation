@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap(props:any) {
-   // 
     const red_threshold: number = 20
     const highest_red: number = 100
     const router = useRouter()
@@ -16,10 +15,12 @@ export default function File_treemap(props:any) {
     let chart_data: Array<dataItem> = []
     //this refreshes tree on new data
     let [dynamic_series, setdynamic_series] = useState([{name: chart_title, data: chart_data}])
-    console.log("prefetch")
+
+    //console.log("prefetch")
     //this stops us from going infinite on re renders
     let [fetched_data, setfetched_data] = useState('')
     if(props.remote !== '' && props.remote && fetched_data != props.remote){
+      console.log(props.remote)
       fetch(props.remote, {
         headers : { 
           'Content-Type': 'application/json',
@@ -29,8 +30,9 @@ export default function File_treemap(props:any) {
       .then((response) => response.json())
       .then((json)=> {
         let mapFromJson = new Map<String, number>(Object.entries(json))
-        console.log("midfetch")
-        console.log(mapFromJson)
+        //console.log("midfetch")
+        //console.log(mapFromJson)
+       
         mapFromJson.forEach((value,key)=>{
           chart_data.push(({x:key,y:Math.round(value*100)/100}))
         })
@@ -39,33 +41,54 @@ export default function File_treemap(props:any) {
             chart_data.push(xy)
         });
       */
+       /*  let l : dataItem[]= [{x:"TITTLE", y:200}] 
+        chart_data = l.concat(chart_data) */
         //sort with biggest first 
-        chart_data.sort((a , b)=>b.y-a.y)
+        //chart_data.sort((a , b)=>b.y-a.y)
         setdynamic_series(
           [{
+            name: chart_title,
+            data: chart_data  
+          },//MULTICHART here
+          {
             name: chart_title,
             data: chart_data  
           }]
         )
         setfetched_data(props.remote)
-        console.log("donefetch") 
+        //console.log("donefetch") 
 
       })
     }
 
-    console.log("postfetch")
+    //console.log("postfetch")
     const options = {
       chart: {
         id: "treemap",
-        toolbar: {
+        /* toolbar: {
             show: false
-          }
+          } */
+      },
+      title: {
+        text: 'Colors are files, squares are functions',
+        align: 'center'
       },
       xaxis: {
         categories: [1, 2, 3, 4] //will be displayed on the x-asis
-      },
+      },dataLabels: {
+        enabled: true,
+        dropShadow: {
+            enabled: true,
+            left: 2,
+            top: 2,
+            opacity: 0.5
+        }
+      } ,
       plotOptions: {
         treemap: {
+          useFillColorAsStroke: true,
+
+          /*,
           colorScale: {
             ranges: [
               {
@@ -79,14 +102,19 @@ export default function File_treemap(props:any) {
                 color: '#000000'
               } 
             ]
-          }
+          } */
         }
-      }
+      } 
     };
     
     return (
+      <>     
+   
       <div className="treewrap">
+        {/* options is red in vscode but still works, typescript error somewhere */}
         <Chart options={options} type="treemap" series={dynamic_series} width="100%" />
       </div>
+ 
+      </>
     );
   }

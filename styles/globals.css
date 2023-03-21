@@ -5,7 +5,6 @@ body{
 }
 
 .treewrap{
-  position: absolute;
   width: 90%;
   margin-left: 5%;
   overflow: hidden
@@ -20,7 +19,11 @@ body{
   
 }
 
-h1{
+.apexcharts-treemap-series::before{
+  
+}
+
+h1, label{
   color: white;
 }
 
@@ -102,4 +105,27 @@ button.active {
 }
 .fullwidthParent{
   width: 100vw;
+}
+
+.treemapOptionButtons{
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
+.centeringparent{
+  display: flex;
+  justify-content: center;
+}
+
+.treebox{
+  width: 20px;
+  height: 20px;
+}
+
+.treelabel{
+  width: fit-content;
+}
+.labelcheckbox{
+  margin-left: 20px;
 }

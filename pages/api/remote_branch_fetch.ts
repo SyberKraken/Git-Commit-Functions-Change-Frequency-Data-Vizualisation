@@ -10,8 +10,8 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  //console.log(cached_data)
-  //console.log(req.query)
+  ////console.log(cached_data)
+  ////console.log(req.query)
   const repo = req.query.repo?.toString()!
   if (cached_data.has(repo)){
     res.status(200).json(cached_data.get(repo))
