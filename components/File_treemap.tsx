@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function File_treemap(props:any) {
+    //useEffect(()=>{console.log(props)},[props])
     const red_threshold: number = 20
     const highest_red: number = 100
     const router = useRouter()
@@ -16,12 +17,25 @@ export default function File_treemap(props:any) {
     //this refreshes tree on new data
     let [dynamic_series, setdynamic_series] = useState([{name: chart_title, data: chart_data}])
 
+    let apiUrl = props.remote
+    let checkboxMap:Map<string,boolean> = props.checkboxMap
+
+    checkboxMap.forEach((value, key) =>{
+      apiUrl = apiUrl + "&" + key + "=" + value
+    })
+  
+    if(props.checkboxMap.get("BugFixList") === true){
+      apiUrl = apiUrl + "&bugList=" + props.bugList
+    }
+    //console.log(apiUrl)
+    //console.log(props.remote)
+    //console.log(props.bugList)
     //console.log("prefetch")
     //this stops us from going infinite on re renders
     let [fetched_data, setfetched_data] = useState('')
     if(props.remote !== '' && props.remote && fetched_data != props.remote){
-      console.log(props.remote)
-      fetch(props.remote, {
+      //console.log(props.remote)
+      fetch(apiUrl, {
         headers : { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'

@@ -7,8 +7,10 @@ const cliProgress = require('cli-progress');
 const sleep = require('sleep');
 type frequencyPairing = { x: string, y: number };
 
-export default function getGitLog(repoUrl: string, useAge?:boolean, useFreq?:boolean, useBugs?:boolean, bugCommitList?: Array<string>) {
+export default function getGitLog(repoUrl: string, useFreq:boolean, useAge:boolean, useBugs:boolean, bugCommitList?: Array<string>) {
   try {
+    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n\n\n\n\n\n\n\nlllllllllllllllll")
+    console.log(arguments)
     // Create a temporary directory to clone the repository into
     const tempDir = tmpdir();
     const repoDir = join(tempDir, 'repo' + Math.floor(Math.random()*9999).toString());
