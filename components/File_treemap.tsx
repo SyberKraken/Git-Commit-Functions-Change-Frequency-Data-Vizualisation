@@ -57,17 +57,19 @@ export default function File_treemap(props:any) {
       */
        /*  let l : dataItem[]= [{x:"TITTLE", y:200}] 
         chart_data = l.concat(chart_data) */
+
         //sort with biggest first 
         //chart_data.sort((a , b)=>b.y-a.y)
+        
         setdynamic_series(
           [{
             name: chart_title,
             data: chart_data  
           },//MULTICHART here
-          {
+         /*  {
             name: chart_title,
             data: chart_data  
-          }]
+          } */]
         )
         setfetched_data(props.remote)
         //console.log("donefetch") 
